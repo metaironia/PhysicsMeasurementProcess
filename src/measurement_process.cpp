@@ -107,6 +107,21 @@ MathFuncStatus MeasurementDataRecalloc (Measurement *measurement_struct) {
     return MATH_FUNC_STATUS_OK;
 }
 
+//------------------------------------------------------------------------
+
+double MeasurementMeanEval (Measurement *measurement_struct) {
+
+    assert (measurement_struct);
+    assert (measurement_struct -> data);
+
+    double total_value = 0;
+
+    for (size_t i = 0; i < measurement_struct -> measurement_number; i++)
+        total_value += (measurement_struct -> data)[i].value;
+
+    return total_value / ((double) (measurement_struct -> measurement_number));
+}
+
 /*
 MathFuncStatus MeasurementErrorArrayInput ()
 

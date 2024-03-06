@@ -40,4 +40,6 @@ MathFuncStatus MeasurementValueAdd (Measurement *msr_struct, FILE *file_to_read)
 
 MathFuncStatus MeasurementDataRecalloc (Measurement *measurement_struct);
 
+double MeasurementMeanEval (Measurement *measurement_struct);
+
 #endif
