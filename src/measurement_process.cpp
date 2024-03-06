@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <assert.h>
 
 #include "measurement_process.h"
@@ -58,6 +59,23 @@ MathFuncStatus MeasurementDataDtor (Measurement *measurement_struct) {
         (measurement_struct -> data)[i].value = MSR_POISON;
         (measurement_struct -> data)[i].error = MSR_POISON;
     }
+
+    return MATH_FUNC_STATUS_OK;
+}
+
+MathFuncStatus MeasurementValueAdd (Measurement *msr_struct, FILE *file_to_read) {
+
+    assert (msr_struct);
+    assert (msr_struct -> data);
+
+//    if (msr_struct -> measurement_number == msr_struct -> data_capacity)
+//        MeasurementDataRecalloc (msr_struct);
+
+    const int fscanf_status = fscanf (file_to_read, " %lg",
+                                      &(msr_struct -> data)[(msr_struct -> measurement_number)++].value);
+
+    if (fscanf_status == 0 || fscanf_status == EOF)
+        return MATH_FUNC_STATUS_FAIL;
 
     return MATH_FUNC_STATUS_OK;
 }

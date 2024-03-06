@@ -1,7 +1,7 @@
 #ifndef MATH_CALCULATION_FUNC_H
 #define MATH_CALCULATION_FUNC_H
 
-
+#include <stdio.h>
 #include <math.h>
 
 enum MathFuncStatus {
@@ -37,5 +37,7 @@ MathFuncStatus MeasurementDtor (Measurement *measurement_struct);
 MathFuncStatus MeasurementDataCtor (Measurement *measurement_struct);
 
 MathFuncStatus MeasurementDataDtor (Measurement *measurement_struct);
+
+MathFuncStatus MeasurementValueAdd (Measurement *msr_struct, FILE *file_to_read);
 
 #endif
