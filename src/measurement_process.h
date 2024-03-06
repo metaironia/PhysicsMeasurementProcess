@@ -24,11 +24,9 @@ struct Measurement {
     size_t           data_capacity;
 };
 
-const int INCREASE_NUM = 2;
-
-const int DEFAULT_DATA_CAPACITY = 4;
-
-const double MSR_POISON = NAN;
+const int    INCREASE_NUM          = 2;
+const int    DEFAULT_DATA_CAPACITY = 4;
+const double MSR_POISON            = NAN;
 
 MathFuncStatus MeasurementCtor (Measurement *measurement_struct);
 
@@ -39,5 +37,7 @@ MathFuncStatus MeasurementDataCtor (Measurement *measurement_struct);
 MathFuncStatus MeasurementDataDtor (Measurement *measurement_struct);
 
 MathFuncStatus MeasurementValueAdd (Measurement *msr_struct, FILE *file_to_read);
+
+MathFuncStatus MeasurementDataRecalloc (Measurement *measurement_struct);
 
 #endif

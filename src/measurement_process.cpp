@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 
 #include "measurement_process.h"
 
@@ -63,13 +65,15 @@ MathFuncStatus MeasurementDataDtor (Measurement *measurement_struct) {
     return MATH_FUNC_STATUS_OK;
 }
 
+//------------------------------------------------------------------------
+
 MathFuncStatus MeasurementValueAdd (Measurement *msr_struct, FILE *file_to_read) {
 
     assert (msr_struct);
     assert (msr_struct -> data);
 
-//    if (msr_struct -> measurement_number == msr_struct -> data_capacity)
-//        MeasurementDataRecalloc (msr_struct);
+    if (msr_struct -> measurement_number == msr_struct -> data_capacity)
+        MeasurementDataRecalloc (msr_struct);
 
     const int fscanf_status = fscanf (file_to_read, " %lg",
                                       &(msr_struct -> data)[(msr_struct -> measurement_number)++].value);
@@ -80,32 +84,30 @@ MathFuncStatus MeasurementValueAdd (Measurement *msr_struct, FILE *file_to_read)
     return MATH_FUNC_STATUS_OK;
 }
 
-/*
-MathFuncStatus MeasurementValueArrayInput (FILE *array_file, MeasuredDataPoint *data_x) {
+//------------------------------------------------------------------------
 
-    assert (array_file);
+MathFuncStatus MeasurementDataRecalloc (Measurement *measurement_struct) {
 
+    assert (measurement_struct);
+    assert (measurement_struct -> data);
 
+    MeasurementData *msr_data  = measurement_struct -> data;
 
-    for (size_t i = 0; !feof (array_file); i++) {
+    size_t prev_data_capacity  = measurement_struct -> data_capacity;
+    size_t new_data_capacity   = prev_data_capacity * INCREASE_NUM;
 
-        fscanf (array_file, " %lg", (data_x -> value)[i]);
-    }
+    measurement_struct -> data = (MeasurementData *) realloc (msr_data,
+                                                              new_data_capacity * sizeof (MeasurementData));
+
+    if (!msr_data)
+        return MATH_FUNC_STATUS_FAIL;
+
+    memset (msr_data + prev_data_capacity, 0, new_data_capacity - prev_data_capacity);
 
     return MATH_FUNC_STATUS_OK;
 }
 
-MathFuncStatus MeasuredDataRealloc (MeasuredData *data) {
-
-    assert (data);
-
-    if (data -> measurement_number == data -> data_capacity)
-        data -> data_point = (MeasurementDataPoint *) realloc (data -> data_point, data_capacity * INCREASE_NUM);
-
-
-
-}
-
+/*
 MathFuncStatus MeasurementErrorArrayInput ()
 
 MathFuncStatus Measurement
