@@ -145,6 +145,33 @@ double MeasurementRandErrEval (const Measurement *measurement_struct) {
 
 //------------------------------------------------------------------------
 
+MathFuncStatus MeasurementSystErrInput (Measurement *measurement_struct) {
+
+    assert (measurement_struct);
+    assert (measurement_struct -> data);
+
+    printf ("Enter systematic error of measurement:\n");
+
+    int scanf_status = scanf (" %lg", &(measurement_struct -> systematic_error));
+
+    while (scanf_status == 0) {
+
+        printf ("Unknown error happened during input. Please, input again:\n");
+
+        scanf_status = scanf (" %lg", &(measurement_struct -> systematic_error));
+    }
+
+    if (scanf_status == EOF) {
+
+        printf ("Reached end-of-file. Systematic error won't be inputted.\n");
+        return MATH_FUNC_STATUS_FAIL;
+    }
+
+    return MATH_FUNC_STATUS_OK;
+}
+
+//------------------------------------------------------------------------
+
 double MeasurementTotalErrEval (const Measurement *measurement_struct) {
 
     assert (measurement_struct);
