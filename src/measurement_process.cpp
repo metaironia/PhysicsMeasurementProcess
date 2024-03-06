@@ -122,6 +122,7 @@ double MeasurementMeanEval (const Measurement *measurement_struct) {
     return total_value / ((double) (measurement_struct -> measurement_number));
 }
 
+//------------------------------------------------------------------------
 
 double MeasurementRandErrEval (const Measurement *measurement_struct) {
 
@@ -142,10 +143,27 @@ double MeasurementRandErrEval (const Measurement *measurement_struct) {
     return sqrt (sum_of_squares / ((double) (msr_number * (msr_number - 1))));
 }
 
-/*
-MathFuncStatus Measurement
+//------------------------------------------------------------------------
 
-MathFuncStatus MeasurementTotalErrorEval
+double MeasurementTotalErrEval (const Measurement *measurement_struct) {
 
-MathFuncStatus MeasurementRandomErrorEval
-*/
+    assert (measurement_struct);
+    assert (measurement_struct -> data);
+
+    const double rand_err_value = MeasurementRandErrEval (measurement_struct);
+    const double syst_err_value = measurement_struct -> systematic_error;
+
+    if (DoublesAreBitsEqual (syst_err_value, MSR_POISON))
+        return rand_err_value;
+
+    return sqrt (pow (rand_err_value, 2) + pow (syst_err_value, 2));
+}
+
+//------------------------------------------------------------------------
+
+bool DoublesAreBitsEqual (const double number_1, const double number_2) {
+
+    const int are_bits_equal = memcmp (&number_1, &number_2, sizeof (double));
+
+    return !are_bits_equal;
+}

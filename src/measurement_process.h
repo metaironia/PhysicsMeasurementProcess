@@ -44,4 +44,8 @@ double MeasurementMeanEval (const Measurement *measurement_struct);
 
 double MeasurementRandErrEval (const Measurement *measurement_struct);
 
+double MeasurementTotalErrEval (const Measurement *measurement_struct);
+
+bool DoublesAreBitsEqual (const double number_1, const double number_2);
+
 #endif
