@@ -109,7 +109,7 @@ MathFuncStatus MeasurementDataRecalloc (Measurement *measurement_struct) {
 
 //------------------------------------------------------------------------
 
-double MeasurementMeanEval (Measurement *measurement_struct) {
+double MeasurementMeanEval (const Measurement *measurement_struct) {
 
     assert (measurement_struct);
     assert (measurement_struct -> data);
@@ -122,9 +122,27 @@ double MeasurementMeanEval (Measurement *measurement_struct) {
     return total_value / ((double) (measurement_struct -> measurement_number));
 }
 
-/*
-MathFuncStatus MeasurementErrorArrayInput ()
 
+double MeasurementRandErrEval (const Measurement *measurement_struct) {
+
+    assert (measurement_struct);
+    assert (measurement_struct -> data);
+
+    const size_t msr_number = measurement_struct -> measurement_number;
+
+    if (msr_number == 1)
+        return NAN;
+
+    const double mean_value     = MeasurementMeanEval (measurement_struct);
+    double       sum_of_squares = 0;
+
+    for (size_t i = 0; i < msr_number; i++)
+        sum_of_squares += pow (((measurement_struct -> data)[i].value - mean_value), 2);
+
+    return sqrt (sum_of_squares / ((double) (msr_number * (msr_number - 1))));
+}
+
+/*
 MathFuncStatus Measurement
 
 MathFuncStatus MeasurementTotalErrorEval
