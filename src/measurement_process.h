@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <math.h>
 
+#define NAME_OF_VAR(var) #var
+
 enum MathFuncStatus {
 
     MATH_FUNC_STATUS_OK,
@@ -49,5 +51,7 @@ MathFuncStatus MeasurementSystErrInput (Measurement *measurement_struct);
 double MeasurementTotalErrEval (const Measurement *measurement_struct);
 
 bool DoublesAreBitsEqual (const double number_1, const double number_2);
+
+MathFuncStatus MeasurementDump (const Measurement *msr_struct);
 
 #endif

@@ -104,6 +104,8 @@ MathFuncStatus MeasurementDataRecalloc (Measurement *measurement_struct) {
 
     memset (msr_data + prev_data_capacity, 0, new_data_capacity - prev_data_capacity);
 
+    measurement_struct -> data_capacity = new_data_capacity;
+
     return MATH_FUNC_STATUS_OK;
 }
 
@@ -193,4 +195,27 @@ bool DoublesAreBitsEqual (const double number_1, const double number_2) {
     const int are_bits_equal = memcmp (&number_1, &number_2, sizeof (double));
 
     return !are_bits_equal;
+}
+
+//------------------------------------------------------------------------
+
+MathFuncStatus MeasurementDump (const Measurement *msr_struct) {
+
+    assert (msr_struct);
+
+    fprintf     (stderr,    "Measurement struct [0x%p] {\n\n", msr_struct);
+
+    fprintf     (stderr,    "    measurement data address = 0x%p\n", msr_struct -> data);
+
+    if (DoublesAreBitsEqual (msr_struct -> systematic_error, MSR_POISON))
+        fprintf (stderr,    "    systematic error         = " NAME_OF_VAR (MSR_POISON));
+
+    else
+        fprintf (stderr,    "    systematic error         = %lg\n", msr_struct -> systematic_error);
+
+    fprintf     (stderr,    "    number of measurement    = %zu\n", msr_struct -> measurement_number);
+    fprintf     (stderr,    "    data capacity            = %zu\n", msr_struct -> data_capacity);
+    fprintf     (stderr,    "}\n");
+
+    return MATH_FUNC_STATUS_OK;
 }
